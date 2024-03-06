@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllWorkouts } from "../../Common/Services/WorkoutService";
-import { getAllWorkoutsWithPersonalWorkouts } from "../../Common/Services/WorkoutService";
+import { getAllWorkoutsWithPersonalWorkouts } from "../../Common/Services/PersonalWorkoutService";
 import Child from "../Child/Child";
 
 export default function Main() {
