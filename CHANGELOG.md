@@ -11,7 +11,7 @@ straightforward as possible.
  
 ### Added
 * Feature 4 Requirements
-    * Add routing
+    * Add routing to About, Register, and Login pages
  
 <!-- ### Changed -->
  

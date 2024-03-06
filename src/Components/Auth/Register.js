@@ -1,5 +1,6 @@
 export default function Register() {
     return (
+    // The proper user authentication functionality will be added at a later date
     <div>
       <h2>Register</h2>
       <form>

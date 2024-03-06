@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllCars } from "../../Common/Services/LearnService";
+import { getAllWorkouts } from "../../Common/Services/WorkoutService";
+import { getAllWorkoutsWithPersonalWorkouts } from "../../Common/Services/WorkoutService";
 import Child from "../Child/Child";
 
 export default function Main() {
-  const [cars, setCars] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
 
+  // Use the service to get all the workout class objects
   useEffect(() => {
-    getAllCars().then((cars) => {
+    getAllWorkoutsWithPersonalWorkouts().then((cars) => {
       console.log(cars);
-      setCars(cars);
+      setWorkouts(cars);
     });
   }, []);
 
@@ -27,7 +29,7 @@ export default function Main() {
           <Link to="/login">Login</Link>
         </li>
       </ul>
-      <Child data={cars} />
+      <Child data={workouts} />
     </div>
   );
 };

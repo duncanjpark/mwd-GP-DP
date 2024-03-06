@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"; // useHistory
+import { useNavigate } from "react-router-dom";
 
 export default function About() {
   const history = useNavigate();
@@ -7,6 +7,7 @@ export default function About() {
     history("/");
   };
   return (
+    // A more detailed about section will be added at a later date
     <section>
       <h1>Welcome to the About component</h1>
       <p>This is the About component</p>
