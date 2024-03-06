@@ -1,4 +1,4 @@
-const Child = ({ data }) => {
+export default function Child({ data }) {
     return (
         <div>
         <h2> This is the main list stateless child component. </h2>
@@ -8,7 +8,3 @@ const Child = ({ data }) => {
         </div>
     );
 };
-
-export default Child;
-  
-  
