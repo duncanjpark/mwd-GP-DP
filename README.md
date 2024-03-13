@@ -1,3 +1,12 @@
+# Modern Web Development Project - Fitness Dashboard and Analysis
+Feature 4
+
+Duncan Park
+
+George Perry
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
