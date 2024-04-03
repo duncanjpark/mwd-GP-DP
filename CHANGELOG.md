@@ -12,6 +12,17 @@ straightforward as possible.
 ### Added
 * Feature 4 Requirements
     * Add routing to About, Register, and Login pages
+
+## [0.3.0] - 2024-04-03
+Implemented Feature 5!
+
+ 
+### Added
+* Feature 5 Requirements
+    * ProtectedRoute Component
+    * Routing
+    * Parse Auth Service
+    * Auth Module
  
 <!-- ### Changed -->
  
