@@ -1,3 +1,5 @@
+import Parse from "parse";
+
 export default function Child({ data }) {
   // Helper function to format dates.
   const formatDate = (date) => {
@@ -9,7 +11,7 @@ export default function Child({ data }) {
   return (
     <div>
       {/* Display a header and subheader for context */}
-      <h3>This is the main list stateless child component.</h3>
+      <h3>Hello, {Parse.User.current()?.get('firstName')}</h3>
       <h4>The workout class objects are displayed below</h4>
       {/* Iterate over the workout data to display each item */}
       {data.map((item, index) => (
