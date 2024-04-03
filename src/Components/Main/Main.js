@@ -23,7 +23,7 @@ export default function Main() {
     // When the logout is clicked, return to unauth main page
     logoutUser().then(() => {
       console.log("User has been logged out");
-      navigate('/');
+      navigate('/auth');
     });
   };
 

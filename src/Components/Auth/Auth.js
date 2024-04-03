@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { isAuthenticated } from "./AuthService";
 import { useNavigate } from "react-router-dom";
 
-const Auth = () => {
+const Auth = ({ showHomeButton = true } ) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +23,12 @@ const Auth = () => {
       <Link to="/login">
         <button>Login</button>
       </Link>
+      <br />
+      <br />
+      {/* Show the home button if not already home */}
+      {showHomeButton && (
+        <button onClick={() => navigate("/")}>Home</button>
+      )}
     </div>
   );
 };

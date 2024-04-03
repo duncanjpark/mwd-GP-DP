@@ -9,7 +9,7 @@ export default function MainUnauth() {
     <div>
       <h1>Chill Fitness</h1>
       <Link to="/about">About</Link>
-      <Auth />
+      <Auth showHomeButton={false} />
     </div>
   );
 };
