@@ -1,13 +1,9 @@
 import React from "react";
-// import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../Components/Auth/AuthService";
-import MainUnauth from "../Components/Main/MainUnauth";
+import Auth from "../Components/Auth/Auth";
+import Landing from "../Components/Main/Landing";
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
-//   const navigate = useNavigate();
-//   const goBackHandler = () => {
-//     navigate("/auth");
-//   };
 
   return (
     <div>
@@ -16,7 +12,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
       ) : (
         <div>
             {/* If the user is unauthenticated, display the limited main page */}
-            <MainUnauth />
+            <Landing />
         </div>
       )}
     </div>

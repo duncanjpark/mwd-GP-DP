@@ -10,8 +10,6 @@ export default function Child({ data }) {
   
   return (
     <div>
-      {/* Display a header and subheader for context */}
-      <h3>Hello, {Parse.User.current()?.get('firstName')}</h3>
       <h4>The workout class objects are displayed below</h4>
       {/* Iterate over the workout data to display each item */}
       {data.map((item, index) => (

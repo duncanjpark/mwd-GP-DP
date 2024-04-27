@@ -4,6 +4,7 @@ import Login from "./Auth/Login";
 import About from "./About/About";
 import Auth from "./Auth/Auth";
 import ProtectedRoute from "../Common/ProtectedRoute";
+import NavBar from "./Main/NavBar";
 
 // Import React Router components for navigation and routing.
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
@@ -11,6 +12,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 export default function Components() {
   return (
     <Router>
+      <NavBar></NavBar>
       <Routes>
         {/* Define the app's routes and their corresponding components. */}
         <Route path="/about" element={<About />} />

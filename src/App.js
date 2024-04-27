@@ -1,4 +1,5 @@
 import './App.css'; // Importing global styles for the app.
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React from "react";
 import Components from "./Components/Components"; // Import main UI components.

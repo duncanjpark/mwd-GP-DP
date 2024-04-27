@@ -2,7 +2,7 @@ import React from "react";
 
 const AuthForm = ({ user, loginPage, onChange, onSubmit }) => {
   return (
-    <form onSubmit={onSubmit} autoComplete="off">
+    <form onSubmit={onSubmit} autoComplete="off" className="auth-form">
       {/* Use conditional to render either login or register */}
       {
         !loginPage && (
