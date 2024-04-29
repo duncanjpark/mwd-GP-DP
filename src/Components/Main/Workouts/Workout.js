@@ -1,21 +1,65 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Card, CardGroup, Row, Col } from 'react-bootstrap';
+import { Container, Card, CardGroup, Row, Col, Form } from 'react-bootstrap';
 import { getAllWorkouts } from '../../../Common/Services/WorkoutService';
+import { getUniqueMusclesWorked } from '../../../Common/Services/WorkoutService';
 
 export default function Workout() {
 
     const [workouts, setWorkouts] = useState([]);
+    const [muscles, setMuscles] = useState([]);
+    const [selectedMuscles, setSelectedMuscles] = useState([]);
 
     useEffect(() => {
+        // Fetch unique muscles
+        getUniqueMusclesWorked()
+            .then(setMuscles)
+            .catch(error => console.error("Error loading muscles:", error));
+
+        // Fetch all workouts
         getAllWorkouts()
             .then(setWorkouts)
             .catch(error => console.error("Error loading workouts:", error));
     }, []);
 
+    const filteredWorkouts = workouts.filter(workout => 
+        selectedMuscles.length === 0 || workout.musclesTargeted.some(muscle => selectedMuscles.includes(muscle))
+    );
+
+    const handleMuscleChange = (muscle, isChecked) => {
+        setSelectedMuscles(prev => {
+            if (isChecked && !prev.includes(muscle)) {
+                return [...prev, muscle];
+            } else if (!isChecked && prev.includes(muscle)) {
+                return prev.filter(m => m !== muscle);
+            }
+            return prev;
+        });
+    };
+
     return (
         <Container className='mt-5'>
-            <Row xs={1} md={2} lg={3} className="g-4">
-                {workouts.map((workout) => (
+            <Row>
+                <h3>Filter by Muscles Worked:</h3>
+            </Row>
+            <Form>
+                <Row>
+                    {muscles.map(muscle => (
+                        <Col xs={6} md={4} lg={3} key={muscle}>
+                            <Form.Check
+                                inline
+                                key={muscle}
+                                type="checkbox"
+                                id={`muscle-${muscle}`}
+                                label={muscle}
+                                onChange={(e) => handleMuscleChange(muscle, e.target.checked)}
+                                checked={selectedMuscles.includes(muscle)}
+                            />
+                        </Col>
+                    ))}
+                </Row>
+            </Form>
+            <Row xs={1} md={2} lg={3} className="g-4 mt-2">
+                {filteredWorkouts.map((workout) => (
                     <Col key={workout.id} className="d-flex">
                         <Card className="flex-fill d-flex flex-column">
                             <Card.Body className="flex-grow-1">
