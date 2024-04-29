@@ -119,13 +119,13 @@ export default function NewSession() {
                     {personalWorkouts.map((workout, index) => (
                         <ListGroup.Item key={index}>
                             <Row>
-                                <Col><strong>{workout.name}</strong> - {workout.weight} lbs. for {workout.sets} sets of {workout.reps} reps</Col>
+                                <Col style={{alignContent:'center'}}><strong>{workout.name}</strong> - {workout.weight} lbs. for {workout.sets} sets of {workout.reps} reps</Col>
                                 <Col style={{ textAlign: 'right' }}>
-                                    <ButtonGroup>
-                                        <Button className="ml-1" variant="info" onClick={() => handleEditWorkout(index)}>
+                                    <ButtonGroup >
+                                        <Button size="sm" variant="info" onClick={() => handleEditWorkout(index)}>
                                             Edit
                                         </Button>
-                                        <Button className="ml-1" variant="danger" onClick={() => handleDeleteWorkout(index)}>
+                                        <Button size="sm" variant="danger" onClick={() => handleDeleteWorkout(index)}>
                                             Delete
                                         </Button>
                                     </ButtonGroup>
