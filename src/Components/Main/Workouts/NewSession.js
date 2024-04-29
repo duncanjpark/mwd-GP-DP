@@ -4,6 +4,7 @@ import { getAllWorkouts } from "../../../Common/Services/WorkoutService";
 import { Container, Row, Col, ButtonGroup, Button, ListGroup } from 'react-bootstrap';
 import NewSessionModal from "./NewSessionModal";
 import { createWorkoutSession } from "../../../Common/Services/WorkoutService";
+import { useNavigate } from 'react-router-dom';
 
 export default function NewSession() {
 
@@ -16,6 +17,8 @@ export default function NewSession() {
     const [sets, setSets] = useState('');
     const [reps, setReps] = useState('');
     const [weight, setWeight] = useState('');
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAllWorkouts().then((workouts) => {
@@ -72,11 +75,11 @@ export default function NewSession() {
         createWorkoutSession(Parse.User.current().id, personalWorkouts)
             .then(session => {
                 console.log('Session saved successfully!', session);
-                // REDIRECT NOW
+                // Redirect to previous session detail view
+                navigate(`/previous-sessions/${session.id}`, { state: { sessionDetails: session } });
             })
             .catch(error => {
                 console.error('Failed to save session:', error);
-                // DISPLAY ERROR
             });
     };
 

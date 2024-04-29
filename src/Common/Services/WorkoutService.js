@@ -41,16 +41,69 @@ export const createWorkoutSession = async (userId, personalWorkouts) => {
 
         // Save all PersonalWorkout objects and wait for them to complete
         const savedWorkouts = await Promise.all(workoutPromises);
-
-        // Optionally link back the saved PersonalWorkouts to the session if needed
         session.set("PersonalWorkouts", savedWorkouts);
         await session.save();
-
-        return { session, savedWorkouts };  // Return the saved session and workouts
-    } catch (error) {
+        return getUserSessionDetail(session.id);
+        } catch (error) {
         console.error("Error creating workout session and personal workouts: ", error);
         throw new Error("Failed to create workout session and personal workouts.");
     }
 };
 
+export const getUserSessions = async () => {
+    const currentUser = Parse.User.current();
+    if (!currentUser) {
+        throw new Error("No authenticated user found");
+    }
 
+    const WorkoutSession = Parse.Object.extend("WorkoutSession");
+    const query = new Parse.Query(WorkoutSession);
+    query.equalTo("UserSession", currentUser); // Assuming 'UserSession' is a pointer to the User
+
+    try {
+        const results = await query.find();
+        return results.map(session => ({
+            id: session.id,
+            date: session.get("sessionDate").toISOString(),
+        }));
+    } catch (error) {
+        console.error("Error fetching user sessions: ", error);
+        throw new Error("Failed to fetch user sessions.");
+    }
+};
+
+export const getUserSessionDetail = async (sessionId) => {
+    const currentUser = Parse.User.current();
+    if (!currentUser) {
+        throw new Error("No authenticated user found");
+    }
+
+    const WorkoutSession = Parse.Object.extend("WorkoutSession");
+    const query = new Parse.Query(WorkoutSession);
+    query.equalTo("objectId", sessionId);
+    query.equalTo("UserSession", currentUser); // Ensure the session belongs to the current user
+    query.include("PersonalWorkouts", "PersonalWorkouts.Workout"); // Include related fields
+
+    try {
+        const session = await query.first();
+        if (!session) {
+            throw new Error("Session not found or access denied");
+        }
+
+        const personalWorkouts = session.get("PersonalWorkouts") || [];
+        return {
+            id: session.id,
+            date: session.get("sessionDate").toISOString(),
+            personalWorkouts: personalWorkouts.map(pw => ({
+                id: pw.id,
+                name: pw.get("Workout").get("name"),
+                reps: pw.get("reps"),
+                sets: pw.get("sets"),
+                weight: pw.get("weight"),
+            }))
+        };
+    } catch (error) {
+        console.error("Error fetching session details: ", error);
+        throw new Error("Failed to fetch session details.");
+    }
+};

@@ -6,7 +6,7 @@ export default function Main() {
 
     const cardsInfo = [
         { title: 'New Session', description: 'Log a new workout session here', url: '/new-session', img: 'img/newSession.jpg' },
-        { title: 'Old Sessions', description: 'View old workout sessions', url: '/site2', img: 'img/oldSession.jpg' },
+        { title: 'Old Sessions', description: 'View old workout sessions', url: '/previous-sessions', img: 'img/oldSession.jpg' },
         { title: 'Learn Workouts', description: 'Learn a new workout', url: '/site3', img: 'img/tutorial.jpg' }
     ];
 
