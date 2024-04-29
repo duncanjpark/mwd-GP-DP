@@ -37,12 +37,13 @@ export default function Analytics() {
             // and create an array of { date, weight } objects for those workouts.
             const workoutData = sessions.flatMap(session => 
                 session.personalWorkouts
-                    .filter(workout => workout.name === selectedWorkout)
-                    .map(workout => ({
-                        date: session.date, // Use the date from the session
-                        weight: workout.weight
-                    }))
-            );
+                  .filter(workout => workout.name === selectedWorkout)
+                  .map(workout => ({
+                    date: session.date,
+                    weight: workout.weight,
+                    reps: workout.reps
+                  }))
+              );
             console.log('Workout data with session dates:', workoutData);
             
             // Sort workoutData by date to ensure the chart shows a proper timeline.
@@ -50,16 +51,26 @@ export default function Analytics() {
             
             const chartLabels = workoutData.map(data => new Date(data.date).toLocaleDateString());
             const chartWeights = workoutData.map(data => data.weight);
-
+            const chartReps = workoutData.map(data => data.reps);
 
             const newChartData = {
-                labels: chartLabels,
-                datasets: [{
-                    label: 'Weight over time',
-                    data: chartWeights,
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                }]
+              labels: chartLabels,
+              datasets: [
+                {
+                  label: 'Weight over time',
+                  data: chartWeights,
+                  borderColor: 'rgb(75, 192, 192)',
+                  backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                  yAxisID: 'y', // Link to the first y-axis
+                },
+                {
+                  label: 'Reps over time',
+                  data: chartReps,
+                  borderColor: 'rgb(255, 99, 132)',
+                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                  yAxisID: 'y1', // Link to the second y-axis
+                },
+              ],
             };
     
             //console.log('New Chart data:', newChartData);
@@ -83,8 +94,33 @@ export default function Analytics() {
     //console.log('Chart data before rendering:', chartData);
 
     const options = {
-        responsive: true, // Makes the chart responsive to window size
-    };
+        responsive: true,
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+              text: 'Weight (lbs)',
+              display: true,
+            },
+          },
+          y1: { // This defines the second y-axis
+            type: 'linear',
+            display: true,
+            position: 'right',
+            grid: {
+              drawOnChartArea: false,
+            },
+            title: {
+              text: 'Reps',
+              display: true,
+            },
+          },
+        },
+      };
+
+
 
     return (
         <Container fluid="lg">
