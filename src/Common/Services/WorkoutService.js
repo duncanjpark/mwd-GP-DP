@@ -18,3 +18,19 @@ export const getAllWorkouts = async () => {
         throw new Error("Unable to fetch workouts.");
     }
 };
+
+export const getUniqueMusclesWorked = async () => {
+    const Workout = Parse.Object.extend("Workout");
+    const query = new Parse.Query(Workout);
+    query.select("musclesTargeted");
+
+    try {
+        const results = await query.find();
+        const allMuscles = results.flatMap(workout => workout.get("musclesTargeted") || []);
+        const uniqueMuscles = [...new Set(allMuscles)];
+        return uniqueMuscles.sort();
+    } catch (error) {
+        console.error("Error fetching unique muscles: ", error);
+        throw new Error("Failed to fetch unique muscles.");
+    }
+};
