@@ -17,7 +17,7 @@ export default function NewSessionModal({ show, onHide, onSave, workoutTypes, wo
                         <Form.Control as="select" value={workoutId} onChange={e => setWorkoutId(e.target.value)}>
                             <option value="">Select a Workout Name</option>
                             {workoutTypes.map((workout, key) => (
-                                <option key={key} value={workout.id}>{workout.get("name")}</option>
+                                <option key={key} value={workout.id}>{workout.name}</option>
                             ))}
                         </Form.Control>
                     </Form.Group>
