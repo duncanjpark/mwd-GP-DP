@@ -47,7 +47,7 @@ export default function NewSession() {
     };
 
     const handleAddPersonalWorkout = () => {
-        const workout = { workoutId, sets, reps, weight, name: workoutTypes.find(w => w.id === workoutId)?.get("name") };
+        const workout = { workoutId, sets, reps, weight, name: workoutTypes.find(w => w.id === workoutId)?.name };
         if (editIndex >= 0) {
             const updatedWorkouts = personalWorkouts.map((item, index) =>
                 index === editIndex ? workout : item

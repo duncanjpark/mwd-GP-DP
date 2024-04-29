@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Card, CardGroup, Row, Col, Form } from 'react-bootstrap';
+import { Container, Card, Row, Col, Form } from 'react-bootstrap';
 import { getAllWorkouts } from '../../../Common/Services/WorkoutService';
 import { getUniqueMusclesWorked } from '../../../Common/Services/WorkoutService';
 
