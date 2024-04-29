@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Parse from "parse";
-import { getAllWorkouts } from "../../../Common/Services/WorkoutService";
 import { Container, Row, Col, ButtonGroup, Button, ListGroup } from 'react-bootstrap';
 import NewSessionModal from "./NewSessionModal";
-import { createWorkoutSession } from "../../../Common/Services/WorkoutService";
-import { useNavigate } from 'react-router-dom';
+import { createWorkoutSession } from "../../../Common/Services/SessionService";
+import { getAllWorkouts } from "../../../Common/Services/WorkoutService";
 
 export default function NewSession() {
 

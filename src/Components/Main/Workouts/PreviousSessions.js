@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUserSessions, getUserSessionDetail } from '../../../Common/Services/WorkoutService';
+import { getUserSessions, getUserSessionDetail } from '../../../Common/Services/SessionService';
 import { useNavigate } from 'react-router-dom';
 
 import { ListGroup, Button, Accordion } from 'react-bootstrap';

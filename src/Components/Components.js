@@ -8,6 +8,8 @@ import NavBar from "./NavBar/NavBar";
 import NewSession from "./Main/Workouts/NewSession";
 import PreviousSessions from "./Main/Workouts/PreviousSessions";
 import PreviousSessionDetails from "./Main/Workouts/PreviousSessionDetails";
+import Workout from "./Main/Workouts/Workout";
+import WorkoutDetail from "./Main/Workouts/WorkoutDetail";
 
 // Import React Router components for navigation and routing.
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
@@ -33,11 +35,20 @@ export default function Components() {
                 />
                 <Route
                     path="/previous-sessions"
-                    element={<ProtectedRoute path="/" element={PreviousSessions} />}
+                    element={<ProtectedRoute path="/previous-sessions" element={PreviousSessions} />}
                 />
                 <Route 
                     path="/previous-sessions/:sessionId" 
-                    element={<ProtectedRoute path="/previous-sessions/:sessionId" element={PreviousSessionDetails} />} />
+                    element={<ProtectedRoute path="/previous-sessions/:sessionId" element={PreviousSessionDetails} />} 
+                />
+                <Route
+                    path="/workouts"
+                    element={<ProtectedRoute path="/workouts" element={Workout} />}
+                />
+                <Route 
+                    path="/workouts/:workoutId" 
+                    element={<ProtectedRoute path="/workouts/:workoutId" element={WorkoutDetail} />} 
+                />
                 <Route path="*" element={<Navigate to="/auth" replace />} />
             </Routes>
         </Router>
