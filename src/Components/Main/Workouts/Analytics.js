@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUserSessions, getUserSessionDetail } from '../../../Common/Services/SessionService';
 import { Dropdown } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -32,16 +33,26 @@ export default function Analytics() {
 
     useEffect(() => {
         if (selectedWorkout) {
-
-            const filteredData = sessions.flatMap(session => 
-                session.personalWorkouts.filter(workout => workout.name === selectedWorkout)
+            // Map through each session to find workouts that match the selected type
+            // and create an array of { date, weight } objects for those workouts.
+            const workoutData = sessions.flatMap(session => 
+                session.personalWorkouts
+                    .filter(workout => workout.name === selectedWorkout)
+                    .map(workout => ({
+                        date: session.date, // Use the date from the session
+                        weight: workout.weight
+                    }))
             );
+            console.log('Workout data with session dates:', workoutData);
             
+            // Sort workoutData by date to ensure the chart shows a proper timeline.
+            workoutData.sort((a, b) => new Date(a.date) - new Date(b.date));
             
-            const chartLabels = filteredData.map(workout => new Date(workout.date).toLocaleDateString());
-            const chartWeights = filteredData.map(workout => workout.weight);
+            const chartLabels = workoutData.map(data => new Date(data.date).toLocaleDateString());
+            const chartWeights = workoutData.map(data => data.weight);
 
-            setChartData({
+
+            const newChartData = {
                 labels: chartLabels,
                 datasets: [{
                     label: 'Weight over time',
@@ -49,36 +60,66 @@ export default function Analytics() {
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                 }]
-            });
+            };
+    
+            //console.log('New Chart data:', newChartData);
+            setChartData(newChartData);
         }
-        //console.log('Chart data:', chartData);
+        console.log('Chart data:', chartData);
     }, [selectedWorkout, sessions]);
+    
 
     const handleSelectWorkout = (eventKey) => {
         setSelectedWorkout(eventKey);
     };
 
-    console.log('sessions :', sessions);
+    useEffect(() => {
+        console.log('Chart data has been set:', chartData);
+      }, [chartData]);
+      
+
     // Extract unique workout types for the dropdown
     const workoutTypes = Array.from(new Set(sessions.flatMap(session => session.personalWorkouts.map(workout => workout.name))));
-    console.log('workouttypes data:', workoutTypes);
+    //console.log('Chart data before rendering:', chartData);
+
+    const options = {
+        responsive: true, // Makes the chart responsive to window size
+    };
 
     return (
-        <div>
-            <h1>Workout Progress Analytics</h1>
-            <Dropdown onSelect={handleSelectWorkout}>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    {selectedWorkout || "Select a Workout"}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    
-                    
-                    {workoutTypes.map((type, index) => (
-                        <Dropdown.Item key={index} eventKey={type}>{type}</Dropdown.Item>
-                    ))}
-                </Dropdown.Menu>
-            </Dropdown>
-            {selectedWorkout && <Line data={chartData} />}
-        </div>
+        <Container fluid="lg">
+            <Row className="mb-4">
+                <Col>
+                    <h1>Workout Progress Analytics</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={4} lg={3}>
+                    <Dropdown onSelect={handleSelectWorkout}>
+                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            {selectedWorkout || "Select a Workout"}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {workoutTypes.map((type, index) => (
+                                <Dropdown.Item key={index} eventKey={type}>
+                                    {type}
+                                </Dropdown.Item>
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+            </Row>
+            <Row className="mt-4">
+                <Col>
+                    <div style={{ height: '600px' }}>
+                        {selectedWorkout && chartData.datasets && chartData.datasets.length > 0 ? (
+                            <Line options={options} data={chartData} />
+                        ) : (
+                            <p>Please select a workout type!</p>
+                        )}
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 }
