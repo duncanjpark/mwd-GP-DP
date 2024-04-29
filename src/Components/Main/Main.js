@@ -7,7 +7,8 @@ export default function Main() {
     const cardsInfo = [
         { title: 'New Session', description: 'Log a new workout session here', url: '/new-session', img: 'img/newSession.jpg' },
         { title: 'Old Sessions', description: 'View old workout sessions', url: '/previous-sessions', img: 'img/oldSession.jpg' },
-        { title: 'Learn Workouts', description: 'Learn a new workout', url: '/workouts', img: 'img/tutorial.jpg' }
+        { title: 'Learn Workouts', description: 'Learn a new workout', url: '/workouts', img: 'img/tutorial.jpg' },
+        { title: 'Analytics', description: 'Gain data-based insights on your fitness progress', url: '/analytics', img: 'img/tutorial.jpg' }
     ];
 
     return (
