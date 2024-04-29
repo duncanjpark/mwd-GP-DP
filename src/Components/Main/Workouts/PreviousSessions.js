@@ -2,16 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { getUserSessions, getUserSessionDetail } from '../../../Common/Services/WorkoutService';
 import { useNavigate } from 'react-router-dom';
 
+import { ListGroup, Button, Accordion } from 'react-bootstrap';
+
+
 export default function PreviousSessions() {
     const [sessions, setSessions] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         getUserSessions().then((userSessions) => {
-            setSessions(userSessions.map(session => ({
-                ...session,
-                date: session.date ? new Date(session.date).toLocaleDateString() : 'No date' // Converts Date to a string
-            })));
+            // Promise.all to fetch details of each session
+            Promise.all(userSessions.map(session => getUserSessionDetail(session.id)))
+                .then(details => {
+                    // Combine sessions with their details
+                    const detailedSessions = userSessions.map((session, index) => ({
+                        ...session,
+                        date: session.date ? new Date(session.date).toLocaleDateString() : 'No date',
+                        personalWorkouts: details[index].personalWorkouts
+                    }));
+                    setSessions(detailedSessions);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch session details:', error);
+                });
         });
     }, []);
 
@@ -27,11 +40,27 @@ export default function PreviousSessions() {
 
     return (
         <div>
-            {sessions.map(session => (
-                <div key={session.id} onClick={() => handleSessionSelect(session.id)}>
-                    {session.date}
-                </div>
-            ))}
+            <Accordion defaultActiveKey="0">
+                {sessions.map((session, index) => (
+                    <Accordion.Item eventKey={index.toString()} key={session.id}>
+                        <Accordion.Header>
+                            Session on {session.date}
+                        </Accordion.Header>
+                        <Accordion.Body>
+                            <ListGroup>
+                                {session.personalWorkouts?.map((workout, wIndex) => (
+                                    <ListGroup.Item key={wIndex}>
+                                        <strong>{workout.name}</strong> - {workout.weight} lbs for {workout.sets} sets of {workout.reps} reps
+                                    </ListGroup.Item>
+                                ))}
+                            </ListGroup>
+                            <Button className="mt-3" variant="primary" onClick={() => handleSessionSelect(session.id)}>
+                                View Details
+                            </Button>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                ))}
+            </Accordion>
         </div>
     );
 }
