@@ -89,6 +89,7 @@ export const getUserSessionDetail = async (sessionId) => {
                 reps: pw.get("reps"),
                 sets: pw.get("sets"),
                 weight: pw.get("weight"),
+                musclesTargeted: pw.get("Workout").get("musclesTargeted")
             }))
         };
     } catch (error) {

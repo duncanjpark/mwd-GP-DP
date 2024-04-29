@@ -13,6 +13,13 @@ export default function PreviousSessionDetails() {
         return <Navigate to="/previous-sessions" />;
     }
 
+    const musclesWorked = new Set();
+    sessionDetails.personalWorkouts.forEach(workout => {
+        workout.musclesTargeted.forEach(muscle => {
+            musclesWorked.add(muscle);
+        });
+    });
+    
     return (
         <Container className="mt-5">
             <Row>
@@ -30,6 +37,14 @@ export default function PreviousSessionDetails() {
                                 <ListGroup.Item key={index}>
                                     <strong>{workout.name}</strong>: {workout.sets} sets of {workout.reps} reps at {workout.weight} lbs
                                 </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </Card>
+                    <Card className="mt-4">
+                        <Card.Header as="h5">Muscles Worked</Card.Header>
+                        <ListGroup variant="flush">
+                            {[...musclesWorked].map((muscle, index) => (
+                                <ListGroup.Item key={index}>{muscle}</ListGroup.Item>
                             ))}
                         </ListGroup>
                     </Card>

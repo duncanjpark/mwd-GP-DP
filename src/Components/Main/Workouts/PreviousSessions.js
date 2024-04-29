@@ -37,7 +37,7 @@ export default function PreviousSessions() {
             console.error('Failed to fetch session details:', error);
         }
     };
-    console.log('sessions :', sessions);
+
     return (
         <div>
             <Accordion defaultActiveKey="0">
