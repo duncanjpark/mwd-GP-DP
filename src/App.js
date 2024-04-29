@@ -10,7 +10,7 @@ Parse.initialize(Env.APPLICATION_ID, Env.JAVASCRIPT_KEY);
 Parse.serverURL = Env.SERVER_URL;
 
 function App() {
-  return <Components />; // Render the main component.
+    return <Components />; // Render the main component.
 }
 
 export default App; // Export App component for use in the project.

@@ -6,7 +6,7 @@ import Parse from "parse";
 export default function Landing() {
 
     return (
-        <Container className="text-center mt-5">
+        <Container className="text-center justify-content-center mt-5 pt-5">
             <Row>
                 <Col>
                     <h1 className="mb-3">Welcome to Chill Fitness</h1>
@@ -14,7 +14,9 @@ export default function Landing() {
                         Track and understand your fitness journey with state-of-the-art visualizations and data analysis.
                     </p>
                 </Col>
-                <Nav.Link href="/about" className="text-white bg-primary px-3 py-2 rounded">
+            </Row>
+            <Row className="justify-content-center">
+                <Nav.Link href="/about" className="text-white bg-primary px-3 py-2 w-25 rounded">
                     Learn More
                 </Nav.Link>
             </Row>

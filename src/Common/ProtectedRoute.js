@@ -1,22 +1,21 @@
 import React from "react";
 import { isAuthenticated } from "../Components/Auth/AuthService";
-import Auth from "../Components/Auth/Auth";
-import Landing from "../Components/Main/Landing";
+import Landing from "../Components/Landing/Landing";
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
 
-  return (
-    <div>
-      {isAuthenticated() ? (
-        <Component />
-      ) : (
+    return (
         <div>
-            {/* If the user is unauthenticated, display the limited main page */}
-            <Landing />
+            {isAuthenticated() ? (
+                <Component />
+            ) : (
+                <div>
+                    {/* If the user is unauthenticated, display the limited main page */}
+                    <Landing />
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default ProtectedRoute;

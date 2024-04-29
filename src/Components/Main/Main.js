@@ -1,29 +1,34 @@
-import React, { useEffect, useState } from "react";
-import Child from "../Child/Child";
+import React from "react";
 import Parse from "parse";
-// Import function to fetch workouts and personal workouts.
-import { getAllWorkoutsWithPersonalWorkouts } from "../../Common/Services/PersonalWorkoutService";
+import { Container, Card, CardGroup } from 'react-bootstrap';
 
 export default function Main() {
-  const [workouts, setWorkouts] = useState([]);
 
-  // Fetch workouts on component mount and update state.
-  useEffect(() => {
-    getAllWorkoutsWithPersonalWorkouts().then((workouts) => {
-      console.log(workouts); // For debugging: logs fetched workouts.
-      setWorkouts(workouts);
-    });
-  }, []);
+    const cardsInfo = [
+        { title: 'New Session', description: 'Log a new workout session here', url: '/new-session', img: 'img/newSession.jpg' },
+        { title: 'Old Sessions', description: 'View old workout sessions', url: '/site2', img: 'img/oldSession.jpg' },
+        { title: 'Learn Workouts', description: 'Learn a new workout', url: '/site3', img: 'img/tutorial.jpg' }
+    ];
 
-  return (
-    <div className="main">
-      {/* Display a header and subheader for context */}
-      <h3>Hello, {Parse.User.current()?.get('firstName')}</h3>
-      Get started by entering a workout here
-      
-
-      {/* Pass fetched workouts to Child component */}
-      <Child data={workouts} />
-    </div>
-  );
+    return (
+        <div className="main">
+            <h3>Hello, {Parse.User.current()?.get('firstName')}</h3>
+            <Container className="mt-5" style={{ maxWidth: '750px' }}>
+                <CardGroup>
+                    {cardsInfo.map((card, index) => (
+                        <Card key={index} style={{ textAlign: 'center' }}>
+                            <Card.Img variant="top" src={card.img}></Card.Img>
+                            <Card.Body>
+                                <Card.Title>{card.title}</Card.Title>
+                                <Card.Text>{card.description}</Card.Text>
+                            </Card.Body>
+                            <Card.Footer>
+                                <Card.Link href={card.url}>Go to {card.title}</Card.Link>
+                            </Card.Footer>
+                        </Card>
+                    ))}
+                </CardGroup>
+            </Container>
+        </div>
+    );
 };
