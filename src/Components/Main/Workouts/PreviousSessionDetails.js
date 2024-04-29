@@ -1,23 +1,26 @@
 import React from 'react';
-import { useLocation, useParams, Navigate } from 'react-router-dom';
-import { Container, Row, Col, Card, ListGroup } from 'react-bootstrap';
+import { useLocation, Navigate } from 'react-router-dom';
+import { Container, Row, Col, Card, ListGroup, Button } from 'react-bootstrap';
 
 
 export default function PreviousSessionDetails() {
 
-
     const location = useLocation();
-    const { sessionId } = useParams();
     const sessionDetails = location.state?.sessionDetails;
 
     if (!sessionDetails) {
-        // Optionally fetch the details again or redirect
+        // Redirect if invalid session
         return <Navigate to="/previous-sessions" />;
     }
 
     return (
-        <Container className="mt-4">
-            <Row className="justify-content-center">
+        <Container className="mt-5">
+            <Row>
+                <Col xs={12}>
+                    <Button href="/previous-sessions">Back to sessions</Button>
+                </Col>
+            </Row>
+            <Row className="justify-content-center mt-5">
                 <Col md={8}>
                     <h1 className="text-center mb-4">Session Details for {new Date(sessionDetails.date).toLocaleDateString()}</h1>
                     <Card>
