@@ -1,39 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Modal, Button, Form } from 'react-bootstrap';
 
-export default function NewSessionModal({ show, onHide, onSave, workoutTypes, workoutData }) {
-
-    // Manage local state for UI
-    const [workoutId, setWorkoutId] = useState('');  // Use typeId to store the ID of the workout
-    const [sets, setSets] = useState('');
-    const [reps, setReps] = useState('');
-    const [weight, setWeight] = useState('');
-
-    useEffect(() => {
-        if (workoutData && show) {
-            setWorkoutId(workoutData.workoutId);
-            setSets(workoutData.sets);
-            setReps(workoutData.reps);
-            setWeight(workoutData.weight);
-        } else {
-            // Reset state when not editing
-            resetForm();
-        }
-    }, [workoutData, show]);
-
-    const saveWorkout = () => {
-        const workoutType = workoutTypes.find(workout => workout.id === workoutId);
-        onSave({ workoutId, name: workoutType.get("name"), sets, reps, weight });
-        onHide();
-        resetForm(); // Reset form after saving
-    };
-
-    const resetForm = () => {
-        setWorkoutId('');
-        setSets('');
-        setReps('');
-        setWeight('');
-    };
+export default function NewSessionModal({ show, onHide, onSave, workoutTypes, workoutId, setWorkoutId, sets, setSets, reps, setReps, weight, setWeight }) {
 
     const isFormValid = workoutId && sets && reps && weight;
 
@@ -87,7 +55,7 @@ export default function NewSessionModal({ show, onHide, onSave, workoutTypes, wo
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onHide}>Close</Button>
-                <Button variant="primary" onClick={saveWorkout} disabled={!isFormValid}>Save Workout</Button>
+                <Button variant="primary" onClick={onSave} disabled={!isFormValid}>Save Workout</Button>
             </Modal.Footer>
         </Modal>
     );

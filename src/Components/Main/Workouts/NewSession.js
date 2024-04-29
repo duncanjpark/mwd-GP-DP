@@ -11,6 +11,11 @@ export default function NewSession() {
     const [workoutTypes, setWorkoutTypes] = useState([]);
     const [modalShow, setModalShow] = useState(false);
     const [editIndex, setEditIndex] = useState(-1);
+    // Add state for modal fields
+    const [workoutId, setWorkoutId] = useState('');
+    const [sets, setSets] = useState('');
+    const [reps, setReps] = useState('');
+    const [weight, setWeight] = useState('');
 
     useEffect(() => {
         getAllWorkouts().then((workouts) => {
@@ -19,18 +24,38 @@ export default function NewSession() {
         });
     }, []);
 
-    const handleAddPersonalWorkout = (workout) => {
+    useEffect(() => {
+        if (editIndex >= 0 && personalWorkouts[editIndex]) {
+            const workout = personalWorkouts[editIndex];
+            setWorkoutId(workout.workoutId);
+            setSets(workout.sets);
+            setReps(workout.reps);
+            setWeight(workout.weight);
+        } else {
+            resetForm();
+        }
+    }, [editIndex, personalWorkouts, modalShow]);
+
+    const resetForm = () => {
+        setWorkoutId('');
+        setSets('');
+        setReps('');
+        setWeight('');
+    };
+
+    const handleAddPersonalWorkout = () => {
+        const workout = { workoutId, sets, reps, weight, name: workoutTypes.find(w => w.id === workoutId)?.get("name") };
         if (editIndex >= 0) {
-            // Editing an existing workout
             const updatedWorkouts = personalWorkouts.map((item, index) =>
                 index === editIndex ? workout : item
             );
             setPersonalWorkouts(updatedWorkouts);
-            setEditIndex(-1); // Reset edit index
         } else {
-            // Adding a new workout
             setPersonalWorkouts([...personalWorkouts, workout]);
         }
+        setEditIndex(-1); // Reset edit index
+        setModalShow(false);
+        resetForm();
     };
 
     const handleDeleteWorkout = (index) => {
@@ -47,11 +72,11 @@ export default function NewSession() {
         createWorkoutSession(Parse.User.current().id, personalWorkouts)
             .then(session => {
                 console.log('Session saved successfully!', session);
-                // You could redirect the user or clear the form here
+                // REDIRECT NOW
             })
             .catch(error => {
                 console.error('Failed to save session:', error);
-                // Handle errors, possibly update UI to notify user
+                // DISPLAY ERROR
             });
     };
 
@@ -76,7 +101,14 @@ export default function NewSession() {
                     onHide={() => setModalShow(false)}
                     onSave={handleAddPersonalWorkout}
                     workoutTypes={workoutTypes}
-                    workoutData={editIndex >= 0 ? personalWorkouts[editIndex] : null}
+                    workoutId={workoutId}
+                    setWorkoutId={setWorkoutId}
+                    sets={sets}
+                    setSets={setSets}
+                    reps={reps}
+                    setReps={setReps}
+                    weight={weight}
+                    setWeight={setWeight}
                 />
             </Row>
             <Row className="m-auto w-75 justify-content-center" style={{ textAlign: 'left' }}>
