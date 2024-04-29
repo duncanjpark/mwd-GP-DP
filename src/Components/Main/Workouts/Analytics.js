@@ -123,7 +123,7 @@ export default function Analytics() {
 
 
     return (
-        <Container fluid="lg">
+        <Container fluid="lg" className='mt-5'>
             <Row className="mb-4">
                 <Col>
                     <h1>Workout Progress Analytics</h1>

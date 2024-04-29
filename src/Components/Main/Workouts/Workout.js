@@ -37,7 +37,7 @@ export default function Workout() {
     };
 
     return (
-        <Container className='mt-5'>
+        <Container className='mt-5 mb-5'>
             <Row>
                 <h3>Filter by Muscles Worked:</h3>
             </Row>
