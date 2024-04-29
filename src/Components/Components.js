@@ -9,7 +9,6 @@ import NewSession from "./Main/Workouts/NewSession";
 import PreviousSessions from "./Main/Workouts/PreviousSessions";
 import PreviousSessionDetails from "./Main/Workouts/PreviousSessionDetails";
 import Workout from "./Main/Workouts/Workout";
-import WorkoutDetail from "./Main/Workouts/WorkoutDetail";
 import Analytics from "./Main/Workouts/Analytics";
 
 // Import React Router components for navigation and routing.
@@ -45,10 +44,6 @@ export default function Components() {
                 <Route
                     path="/workouts"
                     element={<ProtectedRoute path="/workouts" element={Workout} />}
-                />
-                <Route 
-                    path="/workouts/:workoutId" 
-                    element={<ProtectedRoute path="/workouts/:workoutId" element={WorkoutDetail} />} 
                 />
                 <Route
                     path="/analytics"
