@@ -95,7 +95,7 @@ export default function NewSession() {
                     </Button>
                 </Col>
                 <Col>
-                    <Button variant="success" onClick={handleSubmitSession}>
+                    <Button variant="success" onClick={handleSubmitSession} disabled={personalWorkouts.length === 0}>
                         Submit Session
                     </Button>
                 </Col>
