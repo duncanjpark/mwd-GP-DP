@@ -6,11 +6,13 @@ import NewSessionModal from "./NewSessionModal";
 import { createWorkoutSession } from "../../../Common/Services/SessionService";
 import { getAllWorkouts } from "../../../Common/Services/WorkoutService";
 
+// Stateful parent component used to add a new workout session
 export default function NewSession() {
-
+    // States used for listing workouts, modal logic
     const [personalWorkouts, setPersonalWorkouts] = useState([]);
     const [workoutTypes, setWorkoutTypes] = useState([]);
     const [modalShow, setModalShow] = useState(false);
+    // editIndex is used to point to a current workout and ensure proper editing/resaving/deleting
     const [editIndex, setEditIndex] = useState(-1);
     // Add state for modal fields
     const [workoutId, setWorkoutId] = useState('');
@@ -20,6 +22,7 @@ export default function NewSession() {
 
     const navigate = useNavigate();
 
+    // Fetch workout types on component mount
     useEffect(() => {
         getAllWorkouts().then((workouts) => {
             console.log(workouts);
@@ -27,6 +30,7 @@ export default function NewSession() {
         });
     }, []);
 
+    // Populate or reset form when editing or closing the modal
     useEffect(() => {
         if (editIndex >= 0 && personalWorkouts[editIndex]) {
             const workout = personalWorkouts[editIndex];
@@ -39,6 +43,7 @@ export default function NewSession() {
         }
     }, [editIndex, personalWorkouts, modalShow]);
 
+    // Clear the modal fields
     const resetForm = () => {
         setWorkoutId('');
         setSets('');
@@ -46,13 +51,16 @@ export default function NewSession() {
         setWeight('');
     };
 
+    // Function to handle adding or updating a personal workout
     const handleAddPersonalWorkout = () => {
         const workout = { workoutId, sets, reps, weight, name: workoutTypes.find(w => w.id === workoutId)?.name };
+        // editIndex signifies a workout edit - instead of adding a new workout, re-save with edits
         if (editIndex >= 0) {
             const updatedWorkouts = personalWorkouts.map((item, index) =>
                 index === editIndex ? workout : item
             );
             setPersonalWorkouts(updatedWorkouts);
+        // Otherwise, combine the arrays with the new workout
         } else {
             setPersonalWorkouts([...personalWorkouts, workout]);
         }
@@ -61,16 +69,19 @@ export default function NewSession() {
         resetForm();
     };
 
+    // Delete a workout from the list
     const handleDeleteWorkout = (index) => {
         const updatedWorkouts = personalWorkouts.filter((_, i) => i !== index);
         setPersonalWorkouts(updatedWorkouts);
     };
 
+    // Edit a workout
     const handleEditWorkout = (index) => {
         setEditIndex(index); // Set index of workout being edited
         setModalShow(true);  // Show the modal for editing
     };
 
+    // Submit/save the new session
     const handleSubmitSession = () => {
         createWorkoutSession(Parse.User.current().id, personalWorkouts)
             .then(session => {

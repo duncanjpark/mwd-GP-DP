@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Row, Col, Nav } from 'react-bootstrap';
-import Parse from "parse";
 
-
+// Home component used for unauthorized users
 export default function Landing() {
 
     return (

@@ -2,8 +2,10 @@ import React from "react";
 import Parse from "parse";
 import { Container, Card, CardGroup, Row, Col } from 'react-bootstrap';
 
+// Component used as a main dashboard for authenticated users
 export default function Main() {
 
+    // Const var for displaying dashboard cards/links
     const cardsInfo = [
         { title: 'New Session', description: 'Log a new workout session here', url: '/new-session', img: 'img/newSession.jpg' },
         { title: 'Old Sessions', description: 'View old workout sessions', url: '/previous-sessions', img: 'img/oldSession.jpg' },

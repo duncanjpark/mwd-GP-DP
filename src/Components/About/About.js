@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 
+// Component used to describe our website!
 export default function About() {
     return (
         <Container className="my-5">

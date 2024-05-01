@@ -5,6 +5,7 @@ import { isAuthenticated } from "../Auth/AuthService";
 import { logoutUser } from "../Auth/AuthService";
 import { useNavigate } from "react-router-dom";
 
+// Component used to display a Navbar throughout the site
 export default function NavBar() {
 
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function NavBar() {
                         {isAuthenticated() ? (
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>  // Logout option for authenticated users
                         ) : (
-                            <Nav.Link href="/auth">Login or Register</Nav.Link>  // Display Login if not authenticated
+                            <Nav.Link href="/auth">Login or Register</Nav.Link>  // Display Login/Register if not authenticated
                         )}
                     </Nav>
                 </Navbar.Collapse>

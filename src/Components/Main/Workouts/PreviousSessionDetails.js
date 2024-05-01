@@ -1,30 +1,65 @@
-import React from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, ListGroup, Button } from 'react-bootstrap';
+import { getUserSessionDetail } from '../../../Common/Services/SessionService';
 
-
+// Component to display detailed view of a single previous session
 export default function PreviousSessionDetails() {
+    // Extract sessionId from URL parameters
+    const { sessionId } = useParams();
+    const [sessionDetails, setSessionDetails] = useState(null);
+    // States to manage loading and error status
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const location = useLocation();
-    const sessionDetails = location.state?.sessionDetails;
+    const navigate = useNavigate();
 
-    if (!sessionDetails) {
-        // Redirect if invalid session
-        return <Navigate to="/previous-sessions" />;
+    // Effect to fetch session details based on sessionId
+    useEffect(() => {
+        setLoading(true); // Set loading state to true when starting to fetch
+        getUserSessionDetail(sessionId).then(details => {
+            setSessionDetails(details); // Store fetched details in state
+            setLoading(false); // Set loading to false after fetch completes
+        }).catch(error => {
+            console.error('Failed to fetch session details:', error);
+            // Set an error if a user tries to navigate to unauthorized session
+            setError("Failed to load session details or session does not belong to you.");
+            setLoading(false);
+        });
+    }, [sessionId]);
+
+    // Display loading indicator while fetching data
+    if (loading) {
+        return <div>Loading session details...</div>;
     }
 
+    // Render an error message and a back button if there is an error
+    if (error) {
+        return (
+            <Container className="mt-5">
+                <Row>
+                    <Col>
+                        <h2>Error: {error}</h2>
+                        <Button className='mt-5' onClick={() => navigate('/previous-sessions')}>Back to Sessions</Button>
+                    </Col>
+                </Row>
+            </Container>
+        );
+    }
+
+    // Collect unique muscles worked from the session details
     const musclesWorked = new Set();
     sessionDetails.personalWorkouts.forEach(workout => {
         workout.musclesTargeted.forEach(muscle => {
             musclesWorked.add(muscle);
         });
     });
-    
+
     return (
         <Container className="mt-5">
             <Row>
                 <Col xs={12}>
-                    <Button href="/previous-sessions">Back to sessions</Button>
+                    <Button onClick={() => navigate('/previous-sessions')}>Back to Sessions</Button>
                 </Col>
             </Row>
             <Row className="justify-content-center mt-5">

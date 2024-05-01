@@ -10,7 +10,7 @@ const ProtectedRoute = ({ element: Component, ...rest }) => {
                 <Component />
             ) : (
                 <div>
-                    {/* If the user is unauthenticated, display the limited main page */}
+                    {/* If the user is unauthenticated, display the landing page */}
                     <Landing />
                 </div>
             )}

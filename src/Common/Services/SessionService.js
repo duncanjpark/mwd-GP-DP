@@ -1,22 +1,21 @@
 import Parse from "parse";
 
+// Function to create a workout session for a user with given workouts
 export const createWorkoutSession = async (userId, personalWorkouts) => {
-    console.log(userId)
+    // Extend Parse.Object for required classes
     const WorkoutSession = Parse.Object.extend("WorkoutSession");
     const PersonalWorkout = Parse.Object.extend("PersonalWorkout");
     const User = Parse.Object.extend("_User");
     const Workout = Parse.Object.extend("Workout");
 
+    // Create a new WorkoutSession object and set its attributes
     const session = new WorkoutSession();
     session.set("UserSession", User.createWithoutData(userId));
     session.set("sessionDate", new Date());
 
-    console.log(session)
-
     try {
         await session.save();  // Save the session first to obtain an objectId
-
-        // Prepare to save each PersonalWorkout linked to the session and a Workout object
+        // Map each personalWorkouts to save PersonalWorkout objects linked to the session
         const workoutPromises = personalWorkouts.map(workoutData => {
             const personalWorkout = new PersonalWorkout();
             personalWorkout.set("Workout", Workout.createWithoutData(workoutData.workoutId));
@@ -24,21 +23,21 @@ export const createWorkoutSession = async (userId, personalWorkouts) => {
             personalWorkout.set("sets", parseInt(workoutData.sets, 10));
             personalWorkout.set("weight", parseInt(workoutData.weight, 10));
             personalWorkout.set("Session", session);  // Link to the WorkoutSession object
-
             return personalWorkout.save();
         });
 
         // Save all PersonalWorkout objects and wait for them to complete
         const savedWorkouts = await Promise.all(workoutPromises);
         session.set("PersonalWorkouts", savedWorkouts);
-        await session.save();
-        return getUserSessionDetail(session.id);
-        } catch (error) {
+        await session.save(); // Save the session again with all PersonalWorkouts linked
+        return getUserSessionDetail(session.id); // Fetch detailed session info in proper format
+    } catch (error) {
         console.error("Error creating workout session and personal workouts: ", error);
         throw new Error("Failed to create workout session and personal workouts.");
     }
 };
 
+// Function to get all workout sessions for the current user
 export const getUserSessions = async () => {
     const currentUser = Parse.User.current();
     if (!currentUser) {
@@ -47,7 +46,7 @@ export const getUserSessions = async () => {
 
     const WorkoutSession = Parse.Object.extend("WorkoutSession");
     const query = new Parse.Query(WorkoutSession);
-    query.equalTo("UserSession", currentUser); // Assuming 'UserSession' is a pointer to the User
+    query.equalTo("UserSession", currentUser); // Filter sessions by current user
 
     try {
         const results = await query.find();
@@ -61,6 +60,7 @@ export const getUserSessions = async () => {
     }
 };
 
+// Function to get detailed + formatted information about a specific session
 export const getUserSessionDetail = async (sessionId) => {
     const currentUser = Parse.User.current();
     if (!currentUser) {
@@ -69,7 +69,7 @@ export const getUserSessionDetail = async (sessionId) => {
 
     const WorkoutSession = Parse.Object.extend("WorkoutSession");
     const query = new Parse.Query(WorkoutSession);
-    query.equalTo("objectId", sessionId);
+    query.equalTo("objectId", sessionId); // Filter by session ID
     query.equalTo("UserSession", currentUser); // Ensure the session belongs to the current user
     query.include("PersonalWorkouts", "PersonalWorkouts.Workout"); // Include related fields
 

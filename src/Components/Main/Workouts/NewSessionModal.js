@@ -1,8 +1,10 @@
 import React from "react";
 import { Modal, Button, Form } from 'react-bootstrap';
 
+// Stateless child component to render a popup to add workout info
 export default function NewSessionModal({ show, onHide, onSave, workoutTypes, workoutId, setWorkoutId, sets, setSets, reps, setReps, weight, setWeight }) {
 
+    // Flag variable to prevent submission until required fields are filled
     const isFormValid = workoutId && sets && reps && weight;
 
     return (

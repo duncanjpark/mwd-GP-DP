@@ -6,16 +6,16 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const navigate = useNavigate();
 
-    // redirect already authenticated users back to home
+    // State to hold the current user's credentials
     const [currentUser, setCurrentUser] = useState({
         email: "",
         password: "",
     });
 
-    // flag is the state to watch for add/remove updates
+    // State to manage login submission status
     const [add, setAdd] = useState(false);
 
-    // redirect already authenticated users back to home
+    // Effect to redirect authenticated users to home
     useEffect(() => {
         if (isAuthenticated()) {
             alert("You are already logged in");
@@ -23,6 +23,7 @@ const Login = () => {
         }
     }, [navigate]);
 
+    // Effect to handle the login process
     useEffect(() => {
         if (currentUser && add) {
             loginUser(currentUser).then((userLoggedIn) => {
@@ -37,21 +38,20 @@ const Login = () => {
         }
     }, [navigate, currentUser, add]);
 
+    // Handler for form changes, updates state with form data
     const onChangeHandler = (e) => {
         e.preventDefault();
-        console.log(e.target);
         const { name, value: newValue } = e.target;
-        console.log(newValue);
-
         setCurrentUser({ ...currentUser, [name]: newValue });
     };
 
+    // Handler for form submission, triggers login process
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        console.log("submitted: ", e.target);
         setAdd(true);
     };
 
+    // Render the authentication form with handlers
     return (
         <div>
             <AuthForm

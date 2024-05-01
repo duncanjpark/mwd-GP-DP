@@ -24,7 +24,7 @@ export default function Components() {
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                {/* Use a protected route to access the Main page */}
+                {/* Use a protected route to access the Main pages */}
                 <Route
                     path="/"
                     element={<ProtectedRoute path="/" element={Main} />}

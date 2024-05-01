@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { getUserSessions, getUserSessionDetail } from '../../../Common/Services/SessionService';
 import { useNavigate } from 'react-router-dom';
-
 import { ListGroup, Button, Accordion } from 'react-bootstrap';
 
-
+// Component to display previous workout sessions
 export default function PreviousSessions() {
     const [sessions, setSessions] = useState([]);
     const navigate = useNavigate();
 
+    // Fetch all sessions and their details on component mount
     useEffect(() => {
         getUserSessions().then((userSessions) => {
-            // Promise.all to fetch details of each session
             Promise.all(userSessions.map(session => getUserSessionDetail(session.id)))
                 .then(details => {
-                    // Combine sessions with their details
+                    // Combine sessions with their detailed, formatted info
                     const detailedSessions = userSessions.map((session, index) => ({
                         ...session,
                         date: session.date ? new Date(session.date).toLocaleDateString() : 'No date',
@@ -28,11 +27,10 @@ export default function PreviousSessions() {
         });
     }, []);
 
+    // Handle navigation to session details
     const handleSessionSelect = async (sessionId) => {
         try {
-            const details = await getUserSessionDetail(sessionId);
-            console.log(details)
-            navigate(`/previous-sessions/${sessionId}`, { state: { sessionDetails: details } });
+            navigate(`/previous-sessions/${sessionId}`);
         } catch (error) {
             console.error('Failed to fetch session details:', error);
         }

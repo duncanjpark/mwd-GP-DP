@@ -53,4 +53,3 @@ export const logoutUser = () => {
             alert(`Error during logout: ${error.message}`);
         });
 };
-

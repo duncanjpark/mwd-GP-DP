@@ -34,7 +34,7 @@ const AuthForm = ({ user, loginPage, onChange, onSubmit }) => {
                         </div>{" "}
                     </div>
                 )
-                // If loginPage, just render the following
+            // If loginPage, just render the following
             }
             <div>
                 <div className="mt-3">
