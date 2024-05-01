@@ -5,19 +5,22 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
+// Register necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export default function Analytics() {
+    // Define state variables
     const [sessions, setSessions] = useState([]);
     const [selectedWorkout, setSelectedWorkout] = useState('');
     const [chartData, setChartData] = useState({});
 
+    // Fetch and set session data
     useEffect(() => {
         getUserSessions().then((userSessions) => {
-            // Promise.all to fetch details of each session
+            // Fetch session details for each session
             Promise.all(userSessions.map(session => getUserSessionDetail(session.id)))
                 .then(details => {
-                    // Combine sessions with their details
+                    // Merge sessions with their detailed data
                     const detailedSessions = userSessions.map((session, index) => ({
                         ...session,
                         date: session.date ? new Date(session.date).toLocaleDateString() : 'No date',
@@ -31,10 +34,10 @@ export default function Analytics() {
         });
     }, []);
 
+    // Generate chart data when a workout is selected or session data changes
     useEffect(() => {
         if (selectedWorkout) {
-            // Map through each session to find workouts that match the selected type
-            // and create an array of { date, weight } objects for those workouts.
+            // Extract workout data matching the selected workout type
             const workoutData = sessions.flatMap(session => 
                 session.personalWorkouts
                   .filter(workout => workout.name === selectedWorkout)
@@ -46,13 +49,15 @@ export default function Analytics() {
               );
             console.log('Workout data with session dates:', workoutData);
             
-            // Sort workoutData by date to ensure the chart shows a proper timeline.
+            // Sort workout data by date for correct timeline display
             workoutData.sort((a, b) => new Date(a.date) - new Date(b.date));
             
+            // Prepare chart labels and datasets
             const chartLabels = workoutData.map(data => new Date(data.date).toLocaleDateString());
             const chartWeights = workoutData.map(data => data.weight);
             const chartReps = workoutData.map(data => data.reps);
 
+            // Create chart data object with two datasets: one for weights and one for reps
             const newChartData = {
               labels: chartLabels,
               datasets: [
@@ -61,29 +66,31 @@ export default function Analytics() {
                   data: chartWeights,
                   borderColor: 'rgb(75, 192, 192)',
                   backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                  yAxisID: 'y', // Link to the first y-axis
+                  yAxisID: 'y', // Assign to the first y-axis
                 },
                 {
                   label: 'Reps over time',
                   data: chartReps,
                   borderColor: 'rgb(255, 99, 132)',
                   backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                  yAxisID: 'y1', // Link to the second y-axis
+                  yAxisID: 'y1', // Assign to the second y-axis
                 },
               ],
             };
     
-            //console.log('New Chart data:', newChartData);
+            // Set chart data state
             setChartData(newChartData);
         }
         console.log('Chart data:', chartData);
     }, [selectedWorkout, sessions]);
     
 
+    // Update the selected workout type
     const handleSelectWorkout = (eventKey) => {
         setSelectedWorkout(eventKey);
     };
 
+    // Log chart data whenever it changes
     useEffect(() => {
         console.log('Chart data has been set:', chartData);
       }, [chartData]);
@@ -91,8 +98,8 @@ export default function Analytics() {
 
     // Extract unique workout types for the dropdown
     const workoutTypes = Array.from(new Set(sessions.flatMap(session => session.personalWorkouts.map(workout => workout.name))));
-    //console.log('Chart data before rendering:', chartData);
 
+    // Chart options, including two y-axes
     const options = {
         responsive: true,
         scales: {
@@ -105,7 +112,7 @@ export default function Analytics() {
               display: true,
             },
           },
-          y1: { // This defines the second y-axis
+          y1: { // Define the second y-axis
             type: 'linear',
             display: true,
             position: 'right',
@@ -119,8 +126,6 @@ export default function Analytics() {
           },
         },
       };
-
-
 
     return (
         <Container fluid="lg" className='mt-5'>

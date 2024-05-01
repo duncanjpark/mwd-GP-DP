@@ -23,6 +23,18 @@ Implemented Feature 5!
     * Routing
     * Parse Auth Service
     * Auth Module
+
+## [0.4.0] - 2024-05-01
+Implemented Feature 6!
+
+ 
+### Added
+* CSS and Bootstrap Styling
+* NavBar
+* Add Sessions
+* View Previous Sessions
+* Workout tutorials
+* View analytics / graphs
  
 <!-- ### Changed -->
  

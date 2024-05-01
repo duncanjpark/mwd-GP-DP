@@ -1,11 +1,12 @@
 # Modern Web Development Project - Fitness Dashboard and Analysis
-Feature 5
+# Chill Fitness
+Feature 6 - Final Feature!
 
 Duncan Park
 
 George Perry
 
-
+Add workout sessions, learn about workouts, and view analytics on your fitness progress!
 
 # Getting Started with Create React App
 
